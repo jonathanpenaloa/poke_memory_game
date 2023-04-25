@@ -19,6 +19,7 @@ const populatePokemonArr = async () => {
         const url = `https://pokeapi.co/api/v2/pokemon/${getPokemonCount}`
         promises.push(fetch(url))
     }
+    console.log(promises);
     // console.log(promises);
     let pokemonResponses = await Promise.all(promises);
     let jsonPromises = []
@@ -41,29 +42,42 @@ class Pokemon {
     }
 }
 
+// playerChoice = {
+//     firstChoice: undefined,
+//     secoundChoice: undefined
+// }
+// computerChoice = {
+//     firstChoice: undefined,
+//     secoundChoice: undefined
+// }
+
+selectedChoices = {
+    turn: 1,
+    firstChoice: undefined,
+    secoundChoice: undefined
+}
+
 const playGame = async () => {
     const playingPokemon = await populatePokemonArr()
-    console.log(playingPokemon);
 
-    const pokemonInfoForCard =[]
+    const pokemonInfoForCard = [];
+
         playingPokemon.forEach(pokemon => {
 
-            // pokemonInfoForCard.push()
             pokemonInfo = new Pokemon(pokemon.id, pokemon.name, pokemon.sprites.front_default)
             pokemonInfoForCard.push(pokemonInfo);
         });
+       
         pokemonInfoForCard.push(...pokemonInfoForCard);
-
-        
+ 
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
         console.log(shuffledPokemonArray);
-
 
         const createPokemonCard = () => {
             shuffledPokemonArray.forEach( (pokemon, idx) => {
                 let card = document.createElement('div');
                 card.classList.add("pokemon-card");
-
+                
                 let image = document.createElement("img");
                 image.setAttribute("src", pokemon.image);
                 image.setAttribute("alt", "pokemon name");
@@ -74,18 +88,16 @@ const playGame = async () => {
                 card.appendChild(h3);
 
                 board.appendChild(card);
+
+                card.addEventListener("click", () => {
+                    console.log(pokemon);
+                    
+                })
             })
         }
         createPokemonCard();
-
-        // <div class="pokemon-card">
-        // <img src="" alt="">
-        // <h3>Pokemon Moster</h3>
-        // </div>
 }
 playGame()
-
-
 
 
 
@@ -101,10 +113,5 @@ playGame()
 
 /*----- event listeners -----*/
 
-/* board.addeventLis */
 /* playAgainButton */
 
-
-
-
-/*----- functions -----*/

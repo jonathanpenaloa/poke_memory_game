@@ -3,6 +3,7 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+
 .game-board {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -10,4 +11,14 @@
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     border: 30px;
+}
+
+
+
+.pokemon-card {
+    text-align: center;
+    border: 2px solid gold;
+    align-items: center;
+    width: 150px;
+    height: 200px;
 }
