@@ -1,3 +1,13 @@
+/*----- cached elements  -----*/
+
+/* borad */ 
+const board = document.querySelector(".game-board");
+
+/* playerScore */ 
+/* computerScore */ 
+
+
+
 /*----- constants -----*/
 
 /* pokemon (name / img / id ) */
@@ -38,16 +48,40 @@ const playGame = async () => {
     const pokemonInfoForCard =[]
         playingPokemon.forEach(pokemon => {
 
-            pokemonInfoForCard.push()
+            // pokemonInfoForCard.push()
             pokemonInfo = new Pokemon(pokemon.id, pokemon.name, pokemon.sprites.front_default)
             pokemonInfoForCard.push(pokemonInfo);
         });
         pokemonInfoForCard.push(...pokemonInfoForCard);
 
-        console.log(pokemonInfoForCard);
-
+        
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
         console.log(shuffledPokemonArray);
+
+
+        const createPokemonCard = () => {
+            shuffledPokemonArray.forEach( (pokemon, idx) => {
+                let card = document.createElement('div');
+                card.classList.add("pokemon-card");
+
+                let image = document.createElement("img");
+                image.setAttribute("src", pokemon.image);
+                image.setAttribute("alt", "pokemon name");
+                card.appendChild(image);
+
+                let h3 = document.createElement('h3');
+                h3.textContent = pokemon.name;
+                card.appendChild(h3);
+
+                board.appendChild(card);
+            })
+        }
+        createPokemonCard();
+
+        // <div class="pokemon-card">
+        // <img src="" alt="">
+        // <h3>Pokemon Moster</h3>
+        // </div>
 }
 playGame()
 
@@ -62,14 +96,6 @@ playGame()
   // points
   // cardCollection
   // winner
-
-/*----- cached elements  -----*/
-
-/* borad */ 
-/* playerScore */ 
-/* computerScore */ 
- 
-
 
 
 
