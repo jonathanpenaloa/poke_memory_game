@@ -5,15 +5,10 @@
 
 
 .game-board {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    border: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 20px;
 }
 
 

@@ -13,7 +13,7 @@ const gameMessage = document.querySelector('h1');
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 20) {
+    while (randomNums.length < 8) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
