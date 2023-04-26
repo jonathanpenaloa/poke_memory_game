@@ -13,7 +13,7 @@ const gameMessage = document.querySelector('h1');
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 10) {
+    while (randomNums.length < 20) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
@@ -69,8 +69,10 @@ const playGame = async () => {
                 let card = document.createElement('div');
                 card.classList.add("pokemon-card");
                 
-                //dive to hide card on load
-                let cardCover = document.createElement('div');
+           
+                let cardCover = document.createElement('img');
+                cardCover.setAttribute("src", "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4f7705ec-8c49-4eed-a56e-c21f3985254c/dah43cy-a8e121cb-934a-40f6-97c7-fa2d77130dd5.png/v1/fill/w_1024,h_1420/pokemon_card_backside_in_high_resolution_by_atomicmonkeytcg_dah43cy-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTQyMCIsInBhdGgiOiJcL2ZcLzRmNzcwNWVjLThjNDktNGVlZC1hNTZlLWMyMWYzOTg1MjU0Y1wvZGFoNDNjeS1hOGUxMjFjYi05MzRhLTQwZjYtOTdjNy1mYTJkNzcxMzBkZDUucG5nIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.9GzaYS7sd8RPY5FlHca09J9ZQZ9D9zI69Ru-BsbkLDA")
+                cardCover.setAttribute("atl", "hide-image-cover")
                 cardCover.classList.add("hidden-card");
                 
                 let image = document.createElement("img");

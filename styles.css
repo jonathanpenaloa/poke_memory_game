@@ -11,6 +11,9 @@
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     border: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 
@@ -18,18 +21,30 @@
 .pokemon-card {
     position: relative;
     text-align: center;
-    border: 2px solid gold;
+    /* border: 1px solid gold; */
+    /* background-color: rgb(207, 207, 216); */
+    border-radius: 10px;
     align-items: center;
     width: 150px;
     height: 200px;
 }
 
-
-.hidden-card {
+/* .hidden-card {
     position: absolute;
-    background-image: url('https://i.imgur.com/PspU0Bh.png');
+    background-image: url('https://i.imgur.com/2X3NSw4.jpg');
     background-color: red;
     top: 0;
+    left: 0;
+    width: 150px;
+    height: 200px;
+}  */
+
+.hidden-card {
+    /* border: 1px solid gold; */
+    box-shadow: 0px 0px 46px 4px rgba(224,194,76,0.42);
+    border-radius: 10px;
+    position: absolute;
+    top:0;
     left: 0;
     width: 150px;
     height: 200px;
