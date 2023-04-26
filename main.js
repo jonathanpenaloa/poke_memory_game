@@ -1,22 +1,19 @@
 /*----- cached elements  -----*/
 const board = document.querySelector(".game-board");
-const playerPoints = document.querySelector(".player-points");
-const computerPoints = document.querySelector(".computer-points");
+const playerPoints = document.querySelector(".player-points > span");
+const computerPoints = document.querySelector(".computer-points > span");
 const gameMessage = document.querySelector('h1');
 
 /*----- state variables -----*/
-  // turn
-  // messge
-  // points
-  // cardCollection 
-  // winner
+  let points = 0; 
+  let winner = null;
 
-/*----- constants -----*/
+/*----- game starts -----*/
 
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 20) {
+    while (randomNums.length < 10) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
@@ -24,8 +21,6 @@ const populatePokemonArr = async () => {
         const url = `https://pokeapi.co/api/v2/pokemon/${num}`
         promises.push(fetch(url))  
     })
-    console.log(promises);
-    // console.log(promises);
     let pokemonResponses = await Promise.all(promises);
     let jsonPromises = []
     pokemonResponses.forEach((responseObject) => {
@@ -47,19 +42,11 @@ class Pokemon {
     }
 }
 
-// playerChoice = {
-//     firstChoice: undefined,
-//     secoundChoice: undefined
-// }
-// computerChoice = {
-//     firstChoice: undefined,
-//     secoundChoice: undefined
-// }
-
-selectedChoices = {
-    turn: 1,
+let selectedChoices = {
+    turn: null,
     firstChoice: undefined,
-    secoundChoice: undefined
+    firstChoiceCover: undefined,
+    secoundChoice: undefined,
 }
 
 const playGame = async () => {
@@ -76,7 +63,6 @@ const playGame = async () => {
         pokemonInfoForCard.push(...pokemonInfoForCard);
  
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
-        console.log(shuffledPokemonArray);
 
         const createPokemonCard = () => {
             shuffledPokemonArray.forEach( (pokemon, idx) => {
@@ -104,36 +90,36 @@ const playGame = async () => {
 
                 card.addEventListener("click", (e) => {
                     e.preventDefault();
+                    cardCover.classList.add("hidden");
 
-                    // turn = 1 {
-                    
-                    if(selectedChoices.firstChoice === undefined) {
-                        selectedChoices.firstChoice = pokemon.id;
-                        //change class to show card
-                        console.log(selectedChoices);
-                    } else {
-                        if(selectedChoices.secoundChoice === undefined)
-                        selectedChoices.secoundChoice = pokemon.id;
-                        // change class to show the card 
-                        console.log(selectedChoices);
-                    } 
-
-                    // comapare the choices for a match
-                    while (selectedChoices.firstChoice === selectedChoices.secoundChoice) {
+                    const checkForMatch = () => {
+                        if (selectedChoices.firstChoice === selectedChoices.secoundChoice) {
+                            points++;
+                            playerPoints.innerHTML = points;
+                            gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
+                        } else {
+                            gameMessage.innerHTML = "Sorry not a match!";
+                            setTimeout(() => {
+                                selectedChoices.firstChoiceCover.classList.remove('hidden');
+                                cardCover.classList.remove("hidden");
+                            }, 1000)
+                        } 
+                        selectedChoices.firstChoice = undefined;
+                        selectedChoices.secoundChoice = undefined;
+                        selectedChoices.turn = 0;
 
                     }
-                        // if true 
-                            // keep class of card to show 
-                        
-                        // else 
-                            // change to hidden
                     
-                    // add point to the dom element ++ 
+                    if(selectedChoices.firstChoice === undefined) {
+                        selectedChoices.turn = 1;
+                        selectedChoices.firstChoice = pokemon.id;
+                        selectedChoices.firstChoiceCover = cardCover;
 
-
-                    // change the seleted turn = 0
-                        // reset value of selected choices to undefined 
-                            // add the values to the object 
+                    } else if(selectedChoices.secoundChoice === undefined) {
+                        selectedChoices.secoundChoice = pokemon.id;
+                        console.log(selectedChoices);
+                        checkForMatch();
+                    }  
                 
                 })
             })
@@ -143,13 +129,6 @@ const playGame = async () => {
 }
 playGame()
 
-
-
-
-
-
-
-/*----- event listeners -----*/
 
 /* playAgainButton */
 

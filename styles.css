@@ -25,16 +25,15 @@
 }
 
 
-/* .hidden-card {
+.hidden-card {
     position: absolute;
-    background-image: url("https://imgur.com/a/EqbgNo4");
+    background-image: url('https://i.imgur.com/PspU0Bh.png');
     background-color: red;
     top: 0;
     left: 0;
     width: 150px;
     height: 200px;
-} */
-/* 
-.hidden-card {
+} 
+.hidden {
     display: none;
-} */
+}
