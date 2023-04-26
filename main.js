@@ -1,24 +1,29 @@
 /*----- cached elements  -----*/
-
-/* borad */ 
 const board = document.querySelector(".game-board");
+const playerPoints = document.querySelector(".player-points");
+const computerPoints = document.querySelector(".computer-points");
+const gameMessage = document.querySelector('h1');
 
-/* playerScore */ 
-/* computerScore */ 
-
-
+/*----- state variables -----*/
+  // turn
+  // messge
+  // points
+  // cardCollection 
+  // winner
 
 /*----- constants -----*/
 
-/* pokemon (name / img / id ) */
-
 const populatePokemonArr = async () => {
     const promises = [];
-    for (let i=1; i<=20; i++) {
-        const getPokemonCount = Math.floor(Math.random() * 90) + 1;
-        const url = `https://pokeapi.co/api/v2/pokemon/${getPokemonCount}`
-        promises.push(fetch(url))
+    const randomNums = []
+    while (randomNums.length < 20) {
+        const randomInt = Math.floor(Math.random() * 90) + 1;
+        randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
+    randomNums.forEach(num => {
+        const url = `https://pokeapi.co/api/v2/pokemon/${num}`
+        promises.push(fetch(url))  
+    })
     console.log(promises);
     // console.log(promises);
     let pokemonResponses = await Promise.all(promises);
@@ -78,6 +83,10 @@ const playGame = async () => {
                 let card = document.createElement('div');
                 card.classList.add("pokemon-card");
                 
+                //dive to hide card on load
+                let cardCover = document.createElement('div');
+                cardCover.classList.add("hidden-card");
+                
                 let image = document.createElement("img");
                 image.setAttribute("src", pokemon.image);
                 image.setAttribute("alt", "pokemon name");
@@ -87,27 +96,56 @@ const playGame = async () => {
                 h3.textContent = pokemon.name;
                 card.appendChild(h3);
 
+                
                 board.appendChild(card);
+                
+                // adding div to hide card
+                card.appendChild(cardCover);
 
-                card.addEventListener("click", () => {
-                    console.log(pokemon);
+                card.addEventListener("click", (e) => {
+                    e.preventDefault();
+
+                    // turn = 1 {
                     
+                    if(selectedChoices.firstChoice === undefined) {
+                        selectedChoices.firstChoice = pokemon.id;
+                        //change class to show card
+                        console.log(selectedChoices);
+                    } else {
+                        if(selectedChoices.secoundChoice === undefined)
+                        selectedChoices.secoundChoice = pokemon.id;
+                        // change class to show the card 
+                        console.log(selectedChoices);
+                    } 
+
+                    // comapare the choices for a match
+                    while (selectedChoices.firstChoice === selectedChoices.secoundChoice) {
+
+                    }
+                        // if true 
+                            // keep class of card to show 
+                        
+                        // else 
+                            // change to hidden
+                    
+                    // add point to the dom element ++ 
+
+
+                    // change the seleted turn = 0
+                        // reset value of selected choices to undefined 
+                            // add the values to the object 
+                
                 })
             })
         }
         createPokemonCard();
+
 }
 playGame()
 
 
 
-/*----- state variables -----*/
-  // turn
-  // board
-  // messge
-  // points
-  // cardCollection
-  // winner
+
 
 
 

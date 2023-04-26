@@ -16,9 +16,25 @@
 
 
 .pokemon-card {
+    position: relative;
     text-align: center;
     border: 2px solid gold;
     align-items: center;
     width: 150px;
     height: 200px;
 }
+
+
+/* .hidden-card {
+    position: absolute;
+    background-image: url("https://imgur.com/a/EqbgNo4");
+    background-color: red;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 200px;
+} */
+/* 
+.hidden-card {
+    display: none;
+} */
