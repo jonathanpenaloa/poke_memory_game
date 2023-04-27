@@ -13,7 +13,7 @@ const gameMessage = document.querySelector('h1');
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 8) {
+    while (randomNums.length < 3) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
@@ -99,6 +99,7 @@ const playGame = async () => {
                             points++;
                             playerPoints.innerHTML = points;
                             gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
+                            
                         } else {
                             gameMessage.innerHTML = "Sorry not a match!";
                             setTimeout(() => {
@@ -112,17 +113,28 @@ const playGame = async () => {
 
                     }
                     
-                    if(selectedChoices.firstChoice === undefined) {
+                    if (selectedChoices.firstChoice === undefined) {
                         selectedChoices.turn = 1;
                         selectedChoices.firstChoice = pokemon.id;
                         selectedChoices.firstChoiceCover = cardCover;
+                        // card.removeEventListener("click", () => {});
 
-                    } else if(selectedChoices.secoundChoice === undefined) {
+                    } else if (selectedChoices.secoundChoice === undefined) {
                         selectedChoices.secoundChoice = pokemon.id;
-                        console.log(selectedChoices);
+                        // console.log(selectedChoices);
                         checkForMatch();
                     }  
-                
+
+                    // get first randome pokemon from shuffeled arr 
+                     let computerFirstChoice = Math.floor(Math.random() *shuffledPokemonArray.length);
+                    //  console.log("first one for computer", computerFirstChoice);
+                    // console.log(idx);
+                    //  let computerSecoundChoice 
+                        // set firstRandom to computer first choice
+                    // get secound random pokemon from shuffled aee 
+                        // set scecondChoice for computer 
+                    // check for match 
+                        // 
                 })
             })
         }
