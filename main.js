@@ -35,10 +35,11 @@ const populatePokemonArr = async () => {
 
 
 class Pokemon {
-    constructor(id, name, image) {
+    constructor(id, name, image, isCopy = false) {
         this.id = id
         this.name = name
         this.image = image
+        this.isCopy = isCopy;
     }
 }
 
@@ -47,6 +48,7 @@ let selectedChoices = {
     firstChoice: undefined,
     firstChoiceCover: undefined,
     secoundChoice: undefined,
+    alreadySelectedIdxs: []
 }
 
 const playGame = async () => {
@@ -56,16 +58,31 @@ const playGame = async () => {
 
         playingPokemon.forEach(pokemon => {
 
-            pokemonInfo = new Pokemon(pokemon.id, pokemon.name, pokemon.sprites.front_default)
+            pokemonInfo = new Pokemon(pokemon.id, pokemon.name, pokemon.sprites.front_default, false)
             pokemonInfoForCard.push(pokemonInfo);
         });
        
-        pokemonInfoForCard.push(...pokemonInfoForCard);
- 
+        let copyarr = pokemonInfoForCard.map((pokemon) => {
+            
+            let pokemonCopy = {
+                ...pokemon,
+                isCopy: true
+            }
+            return pokemonCopy;
+        });
+
+
+        pokemonInfoForCard.push(...copyarr);
+
+        console.log('arr',copyarr)
+        console.log(pokemonInfoForCard)
+  
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
 
         const createPokemonCard = () => {
             shuffledPokemonArray.forEach( (pokemon, idx) => {
+                pokemon.idx = idx;
+        
                 let card = document.createElement('div');
                 card.classList.add("pokemon-card");
                 
@@ -95,17 +112,22 @@ const playGame = async () => {
                     cardCover.classList.add("hidden");
 
                     const checkForMatch = () => {
-                        if (selectedChoices.firstChoice === selectedChoices.secoundChoice) {
+                        if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
                             points++;
                             playerPoints.innerHTML = points;
                             gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
-                            
+                            selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx)
+                            console.log(selectedChoices.alreadySelectedIdxs)
                         } else {
                             gameMessage.innerHTML = "Sorry not a match!";
                             setTimeout(() => {
                                 selectedChoices.firstChoiceCover.classList.remove('hidden');
                                 cardCover.classList.remove("hidden");
                             }, 1000)
+
+                            setTimeout(() => {
+                                makeAiMove()
+                            }, 1000);
                         } 
                         selectedChoices.firstChoice = undefined;
                         selectedChoices.secoundChoice = undefined;
@@ -115,32 +137,41 @@ const playGame = async () => {
                     
                     if (selectedChoices.firstChoice === undefined) {
                         selectedChoices.turn = 1;
-                        selectedChoices.firstChoice = pokemon.id;
+                        selectedChoices.firstChoice = pokemon;
                         selectedChoices.firstChoiceCover = cardCover;
-                        // card.removeEventListener("click", () => {});
+    
 
                     } else if (selectedChoices.secoundChoice === undefined) {
-                        selectedChoices.secoundChoice = pokemon.id;
-                        // console.log(selectedChoices);
-                        checkForMatch();
+                        selectedChoices.secoundChoice = pokemon;
+                        // check if pokemon have same name
+                        if(selectedChoices.firstChoice.name === selectedChoices.secoundChoice.name) {
+                            if(selectedChoices.firstChoice.isCopy !== selectedChoices.secoundChoice.isCopy) {
+                                checkForMatch()
+                            } 
+                        } else {
+                            checkForMatch()
+                        }
                     }  
-
-                    // get first randome pokemon from shuffeled arr 
-                     let computerFirstChoice = Math.floor(Math.random() *shuffledPokemonArray.length);
-                    //  console.log("first one for computer", computerFirstChoice);
-                    // console.log(idx);
-                    //  let computerSecoundChoice 
-                        // set firstRandom to computer first choice
-                    // get secound random pokemon from shuffled aee 
-                        // set scecondChoice for computer 
-                    // check for match 
-                        // 
                 })
             })
+        } 
+        
+        const makeAiMove = () => {
+            let selectedIdxs= [];
+            let count = 0;
+            while(selectedIdxs.length < 2 && count < 200)   {
+                let randomIdx = Math.floor(Math.random() * shuffledPokemonArray.length);
+                count++
+                if(!selectedChoices.alreadySelectedIdxs.includes(randomIdx)) {
+                    selectedIdxs.push(randomIdx);
+                    console.log(selectedIdxs)
+                }
+            }
+            
         }
         createPokemonCard();
+} 
 
-}
 playGame()
 
 
