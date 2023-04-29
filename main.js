@@ -1,11 +1,11 @@
 /*----- cached elements  -----*/
 const board = document.querySelector(".game-board");
-const playerPoints = document.querySelector(".player-points > span");
-const AiPoints = document.querySelector(".computer-points > span");
+const playerPointsEl = document.querySelector(".player-points > span");
+const AiPointsEl = document.querySelector(".computer-points > span");
 const gameMessage = document.querySelector('h1');
 
 /*----- state variables -----*/
-  let points = 0; 
+  let playerScore = 0; 
   let winner = null;
   let AiScore = 0;
 
@@ -45,7 +45,6 @@ class Pokemon {
 }
 
 let selectedChoices = {
-    turn: null,
     firstChoice: undefined,
     firstChoiceCover: undefined,
     secoundChoice: undefined,
@@ -74,13 +73,23 @@ const playGame = async () => {
 
 
         pokemonInfoForCard.push(...copyarr);
-
-        // console.log('arr',copyarr)
-        // console.log(pokemonInfoForCard)
   
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
 
+        const checkForWinner = () => {
+            if(selectedChoices.alreadySelectedIdxs.length === shuffledPokemonArray.length) {
+                if (playerScore > AiScore) {
+                    gameMessage.innerText = "You win!!"
+                } else if (playerScore < AiScore) {
+                    gameMessage.innerText = "Ai wins!!"
+                } else {
+                    gameMessage.innerText = "its a tie.."
+                }
+            }
+          }
+
         const createPokemonCard = () => {
+
             shuffledPokemonArray.forEach( (pokemon, idx) => {
                 pokemon.idx = idx;
         
@@ -110,28 +119,31 @@ const playGame = async () => {
 
                 card.addEventListener("click", (e) => {
                     e.preventDefault();
-                    cardCover.classList.add("hidden");
+                
+                    cardCover.classList.add("show");
                 const checkForMatch = () => {
                     if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
-                        points++;
-                        playerPoints.innerHTML = points;
+                        playerScore++;
+                        checkForWinner()
+                        playerPointsEl.innerHTML = playerScore;
                         gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
-                        selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx)
+                        selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx);
                         console.log(selectedChoices.alreadySelectedIdxs)
+                        checkForWinner()
+
                     } else {
                         gameMessage.innerHTML = "Sorry not a match!";
                         setTimeout(() => {
-                            selectedChoices.firstChoiceCover.classList.remove('hidden');
-                            cardCover.classList.remove("hidden");
+                            selectedChoices.firstChoiceCover.classList.remove('show');
+                            cardCover.classList.remove("show");
                         }, 1000)
-                            
+                        
                         setTimeout(() => {
                             makeAiMove()
                         }, 2000);
                     } 
                     selectedChoices.firstChoice = undefined;
                     selectedChoices.secoundChoice = undefined;
-                    selectedChoices.turn = 0;
                     }
                     
                     if (selectedChoices.firstChoice === undefined) {
@@ -154,6 +166,8 @@ const playGame = async () => {
             })
         } 
 
+
+
         const makeAiMove = () => {
             let selectedIdxs= [];
             let count = 0;
@@ -163,44 +177,39 @@ const playGame = async () => {
                 if(!selectedChoices.alreadySelectedIdxs.includes(randomIdx)) {
                     selectedChoices.alreadySelectedIdxs.push(randomIdx)
                     selectedIdxs.push(randomIdx);
-                    console.log(randomIdx);
+                    // console.log(randomIdx);
                 }
             }
-
 
             // select array of hidden covers
               const covers = document.querySelectorAll('.card-cover')
               console.log(covers); 
             
-              covers[selectedIdxs[0]].classList.add("hidden")
+              covers[selectedIdxs[0]].classList.add("show")
         
-              covers[selectedIdxs[1]].classList.add("hidden")
+              covers[selectedIdxs[1]].classList.add("show")
 
-              
               if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
                   AiScore++
-                  AiPoints.innerHTML = AiScore;
+                  AiPointsEl.innerHTML = AiScore;
                   gameMessage.innerHTML = `Ai caugh a pokemon!`;
                   selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
                   selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
                   selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
 
-                  console.log(selectedChoices.alreadySelectedIdxs);
-                  selectedChoices.firstChoice = undefined;
-                  selectedChoices.secoundChoice = undefined;
-                  
-                                    
-
-        
+                //   console.log(selectedChoices.alreadySelectedIdxs);
+                //   selectedChoices.firstChoice = undefined;
+                //   selectedChoices.secoundChoice = undefined;
                 } else {
                     selectedChoices.alreadySelectedIdxs.pop()
                     selectedChoices.alreadySelectedIdxs.pop()
                     gameMessage.innerHTML = `Sorry Ai, not a match`
                     gameMessage.innerHTML = `Chose another Pokemon`
                     setTimeout(() => {
-                        covers[selectedIdxs[0]].classList.remove("hidden")
-                        covers[selectedIdxs[1]].classList.remove("hidden")
+                        covers[selectedIdxs[0]].classList.remove("show")
+                        covers[selectedIdxs[1]].classList.remove("show")
                     }, 1000)
+                    checkForWinner()
                 }
 
             
