@@ -10,7 +10,7 @@
 }
 
 body {
-    background-color: black;
+    background-color: #000000;
 }
 
 h1 {
@@ -66,4 +66,27 @@ h1 {
 .show {
     display: none;
     background-color: aqua;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    margin-top: 30px;
+}
+
+.button button {
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Press Start 2P', cursive;
+    color: rgba(234, 187, 19, 0.925);
+    background-color: black;
+    border-radius: 20px;
+    border-color: 2px solid rgba(234, 187, 19, 0.925);
+}
+
+.button button:hover {
+    background-color: #eec60a;
+    /* background-color: rgba(234, 187, 19, 0.925); */
+    color: black;
 }
