@@ -111,31 +111,27 @@ const playGame = async () => {
                 card.addEventListener("click", (e) => {
                     e.preventDefault();
                     cardCover.classList.add("hidden");
-
-                    const checkForMatch = () => {
-                        if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
-                            points++;
-                            playerPoints.innerHTML = points;
-                            gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
-                            selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx)
-                            console.log(selectedChoices.alreadySelectedIdxs)
-                        } else {
-                            gameMessage.innerHTML = "Sorry not a match!";
-                            setTimeout(() => {
-                                
-                                selectedChoices.firstChoiceCover.classList.remove('hidden');
-                                cardCover.classList.remove("hidden");
-                            }, 1000)
-
-                            setTimeout(() => {
-    
-                                makeAiMove()
-                            }, 2000);
-                        } 
-                        selectedChoices.firstChoice = undefined;
-                        selectedChoices.secoundChoice = undefined;
-                        selectedChoices.turn = 0;
-
+                const checkForMatch = () => {
+                    if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
+                        points++;
+                        playerPoints.innerHTML = points;
+                        gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
+                        selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx)
+                        console.log(selectedChoices.alreadySelectedIdxs)
+                    } else {
+                        gameMessage.innerHTML = "Sorry not a match!";
+                        setTimeout(() => {
+                            selectedChoices.firstChoiceCover.classList.remove('hidden');
+                            cardCover.classList.remove("hidden");
+                        }, 1000)
+                            
+                        setTimeout(() => {
+                            makeAiMove()
+                        }, 2000);
+                    } 
+                    selectedChoices.firstChoice = undefined;
+                    selectedChoices.secoundChoice = undefined;
+                    selectedChoices.turn = 0;
                     }
                     
                     if (selectedChoices.firstChoice === undefined) {
@@ -172,28 +168,29 @@ const playGame = async () => {
             }
 
 
+            // select array of hidden covers
+              const covers = document.querySelectorAll('.card-cover')
+              console.log(covers); 
             
-                      // select array of hidden covers
-                        const covers = document.querySelectorAll('.card-cover')
-                        console.log(covers); 
+              covers[selectedIdxs[0]].classList.add("hidden")
         
+              covers[selectedIdxs[1]].classList.add("hidden")
 
+              
+              if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
+                  AiScore++
+                  AiPoints.innerHTML = AiScore;
+                  gameMessage.innerHTML = `Ai caugh a pokemon!`;
+                  selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
+                  selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
+                  selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
 
-                        covers[selectedIdxs[0]].classList.add("hidden")
-                        covers[selectedIdxs[1]].classList.add("hidden")
-                if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
-                    AiScore++
-                    AiPoints.innerHTML = AiScore;
-                    gameMessage.innerHTML = `Ai caugh a pokemon!`;
-                    selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
-                    selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
-                    selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
-
-                    console.log(selectedChoices.alreadySelectedIdxs);
-
-                    selectedChoices.firstChoice = undefined;
-                    selectedChoices.secoundChoice = undefined;
+                  console.log(selectedChoices.alreadySelectedIdxs);
+                  selectedChoices.firstChoice = undefined;
+                  selectedChoices.secoundChoice = undefined;
                   
+                                    
+
         
                 } else {
                     selectedChoices.alreadySelectedIdxs.pop()
