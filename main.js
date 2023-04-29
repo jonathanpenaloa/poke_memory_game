@@ -197,9 +197,9 @@ const playGame = async () => {
                   selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
                   selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
 
-                //   console.log(selectedChoices.alreadySelectedIdxs);
-                //   selectedChoices.firstChoice = undefined;
-                //   selectedChoices.secoundChoice = undefined;
+
+                  selectedChoices.firstChoice = undefined;
+                  selectedChoices.secoundChoice = undefined;
                 } else {
                     selectedChoices.alreadySelectedIdxs.pop()
                     selectedChoices.alreadySelectedIdxs.pop()

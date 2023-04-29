@@ -3,6 +3,27 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+:root {
+    --color1: rgb(0, 231, 255);
+    --color2: rgb(255, 0, 231);
+    --back: 
+}
+
+body {
+    background-color: black;
+}
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: rgba(234, 187, 19, 0.925);
+}
+
+.messege-board{
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
 .game-board {
     display: flex;
@@ -14,8 +35,9 @@
 .pokemon-card {
     position: relative;
     text-align: center;
-    /* border: 1px solid gold; */
-    /* background-color: rgb(207, 207, 216); */
+    /* border: .5px solid gold; */
+    color: white;
+    background-color: rgb(103, 103, 110);
     border-radius: 10px;
     align-items: center;
     width: 150px;
@@ -31,7 +53,17 @@
     width: 150px;
     height: 200px;
 } 
+.hidden-card:hover {
+        box-shadow: 
+          -20px -20px 30px -25px var(--color1), 
+          20px 20px 30px -25px var(--color2), 
+          -7px -7px 10px -5px var(--color1), 
+          7px 7px 10px -5px var(--color2), 
+          0 0 13px 4px rgba(255,255,255,0.3),
+          0 55px 35px -20px rgba(0, 0, 0, 0.5);
+}
 
 .show {
     display: none;
+    background-color: aqua;
 }
