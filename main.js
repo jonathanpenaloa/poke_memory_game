@@ -14,7 +14,7 @@ const gameMessage = document.querySelector('h1');
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 2) {
+    while (randomNums.length < 5) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
@@ -157,7 +157,7 @@ const playGame = async () => {
                 })
             })
         } 
-        
+
         const makeAiMove = () => {
             let selectedIdxs= [];
             let count = 0;
@@ -170,17 +170,14 @@ const playGame = async () => {
                     console.log(randomIdx);
                 }
             }
-                // const displayAiChoices = () => {
-                //     selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
-                //     selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
-                    
-                // }
-            //    displayAiChoices() 
-            console.log(selectedIdxs);
-                console.log(shuffledPokemonArray[selectedIdxs[0]] , shuffledPokemonArray[selectedIdxs[1]] );
+
+
+            
                       // select array of hidden covers
                         const covers = document.querySelectorAll('.card-cover')
-                        console.log(covers);
+                        console.log(covers); 
+        
+
 
                         covers[selectedIdxs[0]].classList.add("hidden")
                         covers[selectedIdxs[1]].classList.add("hidden")
@@ -191,12 +188,13 @@ const playGame = async () => {
                     selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
                     selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
                     selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
-              
-                    // selectedChoices.firstChoice.classList.remove('hidden');
-                    // console.dir(pokemonInfoForCard[selectedIdxs[0]])
-                    
-                    // shuffledPokemonArray[selectedIdxs[0]].classList.remove("hidden");
-                    console.log(selectedChoices);
+
+                    console.log(selectedChoices.alreadySelectedIdxs);
+
+                    selectedChoices.firstChoice = undefined;
+                    selectedChoices.secoundChoice = undefined;
+                  
+        
                 } else {
                     selectedChoices.alreadySelectedIdxs.pop()
                     selectedChoices.alreadySelectedIdxs.pop()
@@ -207,12 +205,6 @@ const playGame = async () => {
                         covers[selectedIdxs[1]].classList.remove("hidden")
                     }, 1000)
                 }
-
-             
-
-            // check for match on Ai turn 
-            
-            // const canWeKeepPlayingCards
 
             
         }
