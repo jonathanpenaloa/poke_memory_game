@@ -3,6 +3,7 @@ const board = document.querySelector(".game-board");
 const playerPointsEl = document.querySelector(".player-points > span");
 const AiPointsEl = document.querySelector(".computer-points > span");
 const gameMessage = document.querySelector('h1');
+const replayButtunEl = document.querySelector("button");
 
 /*----- state variables -----*/
   let playerScore = 0; 
@@ -14,7 +15,7 @@ const gameMessage = document.querySelector('h1');
 const populatePokemonArr = async () => {
     const promises = [];
     const randomNums = []
-    while (randomNums.length < 5) {
+    while (randomNums.length < 4) {
         const randomInt = Math.floor(Math.random() * 90) + 1;
         randomNums.includes(randomInt) ? null : randomNums.push(randomInt);
     }
@@ -76,17 +77,46 @@ const playGame = async () => {
   
         const shuffledPokemonArray = pokemonInfoForCard.sort((a, b) => 0.5 - Math.random());
 
+        const removeAllChildrenNodes = () => {
+                while(board.firstChild) {
+                    board.removeChild(board.firstChild);
+                }
+                playGame()
+        }
+
+        const resetGame = () => {
+            replayButtunEl.addEventListener('click', () => {
+                removeAllChildrenNodes();
+                selectedChoices.firstChoice = undefined,
+                selectedChoices.firstChoiceCover = undefined,
+                selectedChoices.secoundChoice = undefined,
+                selectedChoices.alreadySelectedIdxs = [];
+                populatePokemonArr();
+                replayButtunEl.style.visibility = "hidden";
+            });
+        }
+
         const checkForWinner = () => {
             if(selectedChoices.alreadySelectedIdxs.length === shuffledPokemonArray.length) {
                 if (playerScore > AiScore) {
                     gameMessage.innerText = "You win!!"
+                    replayButtunEl.style.visibility = "visible";
+                    resetGame()
+                    
                 } else if (playerScore < AiScore) {
+                    replayButtunEl.style.visibility = "visible";
                     gameMessage.innerText = "Ai wins!!"
+                    resetGame()
+                    /// not showing ties if computers makes last match
                 } else {
+                    replayButtunEl.style.visibility = "visible";
                     gameMessage.innerText = "its a tie.."
+                    resetGame()
                 }
             }
           }
+
+
 
         const createPokemonCard = () => {
 
@@ -124,11 +154,10 @@ const playGame = async () => {
                 const checkForMatch = () => {
                     if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
                         playerScore++;
-                        checkForWinner()
                         playerPointsEl.innerHTML = playerScore;
                         gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
                         selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx);
-                        console.log(selectedChoices.alreadySelectedIdxs)
+                        // console.log(selectedChoices.alreadySelectedIdxs)
                         checkForWinner()
 
                     } else {
