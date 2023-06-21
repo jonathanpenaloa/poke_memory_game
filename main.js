@@ -28,10 +28,10 @@ const populatePokemonArr = async () => {
     pokemonResponses.forEach((responseObject) => {
         jsonPromises.push(responseObject.json())
     })
-    // console.log(jsonPromises);
+
     let finalPokemonData = await Promise.all(jsonPromises)
-    // console.log(finalPokemonData);
-    // here you actually want to just create an array of the form[0]
+  
+
     return finalPokemonData
 }
 
@@ -49,7 +49,8 @@ let selectedChoices = {
     firstChoice: undefined,
     firstChoiceCover: undefined,
     secoundChoice: undefined,
-    alreadySelectedIdxs: []
+    alreadySelectedIdxs: [],
+    isAiTurn: false
 }
 
 const playGame = async () => {
@@ -106,8 +107,7 @@ const playGame = async () => {
                 } else if (playerScore < AiScore) {
                     replayButtunEl.style.visibility = "visible";
                     gameMessage.innerText = "Ai wins!!"
-                    resetGame()
-                    /// not showing ties if computers makes last match
+                    resetGame();
                 } else {
                     replayButtunEl.style.visibility = "visible";
                     gameMessage.innerText = "its a tie.."
@@ -144,24 +144,31 @@ const playGame = async () => {
                 
                 board.appendChild(card);
                 
-                // adding div to hide card
                 card.appendChild(cardCover);
 
                 card.addEventListener("click", (e) => {
+
+                    console.log(selectedChoices)
                     e.preventDefault();
+                    console.log(selectedChoices.isAiTurn);
+                    if(selectedChoices.isAiTurn) return;
+                    if (selectedChoices.firstChoice?.idx === pokemon.idx) return
+
                 
                     cardCover.classList.add("show");
+
+
                 const checkForMatch = () => {
                     if (selectedChoices.firstChoice.id === selectedChoices.secoundChoice.id) {
                         playerScore++;
                         playerPointsEl.innerHTML = playerScore;
                         gameMessage.innerHTML = `You caugh ${pokemon.name}!`;
                         selectedChoices.alreadySelectedIdxs.push(selectedChoices.firstChoice.idx, selectedChoices.secoundChoice.idx);
-                        // console.log(selectedChoices.alreadySelectedIdxs)
                         checkForWinner()
 
                     } else {
                         gameMessage.innerHTML = "Sorry not a match!";
+                        selectedChoices.isAiTurn= true
                         setTimeout(() => {
                             selectedChoices.firstChoiceCover.classList.remove('show');
                             cardCover.classList.remove("show");
@@ -182,7 +189,6 @@ const playGame = async () => {
 
                     } else if (selectedChoices.secoundChoice === undefined) {
                         selectedChoices.secoundChoice = pokemon;
-                        // check if pokemon have same name
                         if(selectedChoices.firstChoice.name === selectedChoices.secoundChoice.name) {
                             if(selectedChoices.firstChoice.isCopy !== selectedChoices.secoundChoice.isCopy) {
                                 checkForMatch()
@@ -206,11 +212,10 @@ const playGame = async () => {
                 if(!selectedChoices.alreadySelectedIdxs.includes(randomIdx)) {
                     selectedChoices.alreadySelectedIdxs.push(randomIdx)
                     selectedIdxs.push(randomIdx);
-                    // console.log(randomIdx);
+
                 }
             }
 
-            // select array of hidden covers
               const covers = document.querySelectorAll('.card-cover')
               console.log(covers); 
             
@@ -221,7 +226,7 @@ const playGame = async () => {
               if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
                   AiScore++
                   AiPointsEl.innerHTML = AiScore;
-                  gameMessage.innerHTML = `Ai caugh a pokemon!`;
+                  gameMessage.innerHTML = `Ai caught a pokemon!`;
                   selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
                   selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
                   selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
@@ -229,6 +234,7 @@ const playGame = async () => {
 
                   selectedChoices.firstChoice = undefined;
                   selectedChoices.secoundChoice = undefined;
+                  selectedChoices.isAiTurn = false;
                 } else {
                     selectedChoices.alreadySelectedIdxs.pop()
                     selectedChoices.alreadySelectedIdxs.pop()
@@ -237,8 +243,10 @@ const playGame = async () => {
                     setTimeout(() => {
                         covers[selectedIdxs[0]].classList.remove("show")
                         covers[selectedIdxs[1]].classList.remove("show")
+                        selectedChoices.isAiTurn = false;
                     }, 1000)
                     checkForWinner()
+                    
                 }
 
             
@@ -248,6 +256,4 @@ const playGame = async () => {
 
 playGame()
 
-
-/* playAgainButton */
 
