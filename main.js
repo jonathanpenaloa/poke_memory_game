@@ -206,50 +206,50 @@ const playGame = async () => {
         const makeAiMove = () => {
             let selectedIdxs= [];
             let count = 0;
-            while(selectedIdxs.length < 2 && count < 200)   {
+            while(selectedIdxs.length < 2 && count < 200) {
                 let randomIdx = Math.floor(Math.random() * shuffledPokemonArray.length);
                 count++
-                if(!selectedChoices.alreadySelectedIdxs.includes(randomIdx)) {
-                    selectedChoices.alreadySelectedIdxs.push(randomIdx)
+                if(
+                    !selectedChoices.alreadySelectedIdxs.includes(randomIdx) &&
+                    !selectedIdxs.includes(randomIdx)
+                ) {
                     selectedIdxs.push(randomIdx);
-
                 }
             }
 
-              const covers = document.querySelectorAll('.card-cover')
-              console.log(covers); 
-            
-              covers[selectedIdxs[0]].classList.add("show")
-        
-              covers[selectedIdxs[1]].classList.add("show")
+            const covers = document.querySelectorAll('.card-cover')
+            console.log(covers);
 
-              if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
-                  AiScore++
-                  AiPointsEl.innerHTML = AiScore;
-                  gameMessage.innerHTML = `Ai caught a pokemon!`;
-                  selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
-                  selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
-                  selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
+            covers[selectedIdxs[0]].classList.add("show")
+
+            covers[selectedIdxs[1]].classList.add("show")
+
+            if(shuffledPokemonArray[selectedIdxs[0]].id === shuffledPokemonArray[selectedIdxs[1]].id) {
+                AiScore++
+                AiPointsEl.innerHTML = AiScore;
+                gameMessage.innerHTML = `Ai caught a pokemon!`;
+                selectedChoices.firstChoice = shuffledPokemonArray[selectedIdxs[0]]
+                selectedChoices.secoundChoice = shuffledPokemonArray[selectedIdxs[1]]
+                selectedChoices.alreadySelectedIdxs.push(selectedIdxs[0], selectedIdxs[1]);
 
 
-                  selectedChoices.firstChoice = undefined;
-                  selectedChoices.secoundChoice = undefined;
-                  selectedChoices.isAiTurn = false;
-                } else {
-                    selectedChoices.alreadySelectedIdxs.pop()
-                    selectedChoices.alreadySelectedIdxs.pop()
-                    gameMessage.innerHTML = `Sorry Ai, not a match`
-                    gameMessage.innerHTML = `Chose another Pokemon`
-                    setTimeout(() => {
-                        covers[selectedIdxs[0]].classList.remove("show")
-                        covers[selectedIdxs[1]].classList.remove("show")
-                        selectedChoices.isAiTurn = false;
-                    }, 1000)
-                    checkForWinner()
-                    
-                }
+                selectedChoices.firstChoice = undefined;
+                selectedChoices.secoundChoice = undefined;
+                selectedChoices.isAiTurn = false;
+                checkForWinner()
+              } else {
+                  gameMessage.innerHTML = `Sorry Ai, not a match`
+                  setTimeout(() => {
+                      covers[selectedIdxs[0]].classList.remove("show")
+                      covers[selectedIdxs[1]].classList.remove("show")
+                      selectedChoices.isAiTurn = false;
+                      gameMessage.innerHTML = `Chose another Pokemon`
+                      checkForWinner()
+                  }, 1000)
 
-            
+              }
+
+
         }
         createPokemonCard();
 } 
